@@ -47,7 +47,7 @@ class TestModelSwitchOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('PUT', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/applications/1/services/2',
+            '/api/project/1/applications/sample_app/services/2',
             'model_id=3',
             {
                 'Authorization': 'Bearer my_token',
@@ -70,7 +70,7 @@ class TestModelSwitchOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('PUT', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/applications/1/services/2',
+            '/api/project/1/applications/sample_app/services/2',
             'model_id=3',
             {
                 'Authorization': 'Bearer my_token',
@@ -85,7 +85,7 @@ class TestModelSwitchOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('PUT', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/applications/1/services/2',
+            '/api/project/1/applications/sample_app/services/2',
             'model_id=7',
             {
                 'Authorization': 'Bearer my_token',

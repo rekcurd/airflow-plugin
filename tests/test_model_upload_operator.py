@@ -85,7 +85,7 @@ class TestModelUploadOperator(unittest.TestCase):
         session_mock.prepare_request.assert_called_with(request_mock)
         request_class_mock.assert_called_with(
             'POST',
-            'http://rekcurd-dashboard.com/api/applications/1/models',
+            'http://rekcurd-dashboard.com/api/project/1/applications/sample_app/models',
             data={'description': desc},
             files={'file': model},
             headers=expected_headers)
@@ -117,6 +117,6 @@ class TestModelUploadOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('GET', http_conn_id='rekcurd_dashboard')
         http_hook_mock.run.assert_called_with(
-            '/api/applications/1/models',
+            '/api/project/1/applications/sample_app/models',
             headers=expected_headers,
             extra_options={'timeout': 300})
