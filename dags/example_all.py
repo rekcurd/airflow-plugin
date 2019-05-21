@@ -89,7 +89,8 @@ with DAG('example_all', default_args=default_args, schedule_interval="@once") as
     upload_evaluation_file = EvaluationUploadOperator(task_id='upload_eval_file',
                                                       project_id=project_id,
                                                       app_id=application_id,
-                                                      evaluation_file_path=EVAL_PATH)
+                                                      evaluation_file_path=EVAL_PATH,
+                                                      description='sample file')
     remove_eval_file = BashOperator(task_id='remove_local_eval_file',
                                     bash_command='rm {}'.format(EVAL_PATH),
                                     trigger_rule='all_done')

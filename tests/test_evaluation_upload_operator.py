@@ -43,7 +43,8 @@ class TestEvaluationUploadOperator(unittest.TestCase):
             task = EvaluationUploadOperator(task_id='rekcurd_api',
                                             dag=self.dag,
                                             project_id=1, app_id='sample_app',
-                                            evaluation_file_path=tf.name)
+                                            evaluation_file_path=tf.name,
+                                            description='sample data')
             task.execute(None)
             expected_headers = {'Authorization': 'Bearer my_token'}
 
@@ -54,6 +55,7 @@ class TestEvaluationUploadOperator(unittest.TestCase):
                 'POST',
                 'http://rekcurd-dashboard.com/api/projects/1/applications/sample_app/evaluations',
                 files={'file': b'hello foo.'},
+                data={'description': 'sample data', 'duplicated_ok': True},
                 headers=expected_headers)
             http_hook_mock.run_and_check.assert_called_with(
                 session_mock,
