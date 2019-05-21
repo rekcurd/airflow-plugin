@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, Union
 
 from airflow.utils.decorators import apply_defaults
 from airflow.hooks.http_hook import HttpHook
@@ -22,7 +22,7 @@ class RekcurdOperator(BaseOperator):
                  timeout: int,
                  method: str,
                  headers: Dict[str, str] = {},
-                 data: Dict[str, Any] = {},
+                 data: Union[str, Dict[str, Any]] = {},
                  extra_options: Optional[Dict[str, Any]] = None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
