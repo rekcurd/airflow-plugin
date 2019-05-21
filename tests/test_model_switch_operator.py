@@ -33,7 +33,7 @@ class TestModelSwitchOperator(unittest.TestCase):
 
         task = ModelSwitchOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    service_id=2,
                                    model_id=model_id,
                                    model_provide_task_id=model_provide_task_id)

@@ -49,11 +49,13 @@ with DAG('example_model_evaluate', default_args=default_args, schedule_interval=
     push_model_id = PythonOperator(task_id='push_model', python_callable=push_by_return)
 
     # Evaluate model whose ID is 3 (evaluation data ID is 5)
-    evaluate = ModelEvaluateOperator(task_id='evaluate_op', app_id=1, model_id=3,
+    evaluate = ModelEvaluateOperator(task_id='evaluate_op', project_id=1,
+                                     app_id='sample_app', model_id=3,
                                      evaluation_provide_task_id='push_eval')
 
     # Evaluate model whose ID is 5 (evaluation data ID is 2)
-    evaluate2 = ModelEvaluateOperator(task_id='evaluate_op2', app_id=1, evaluation_id=2,
+    evaluate2 = ModelEvaluateOperator(task_id='evaluate_op2', project_id=1,
+                                      app_id='sample_app', evaluation_id=2,
                                       model_provide_task_id='push_model')
 
     output_metrics = PythonOperator(task_id='output_metrics',

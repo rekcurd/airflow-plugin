@@ -26,7 +26,7 @@ class TestModelUploadOperator(unittest.TestCase):
             tf.seek(0)
             task = ModelUploadOperator(task_id='rekcurd_api',
                                        dag=self.dag,
-                                       app_id=1,
+                                       project_id=1, app_id='sample_app',
                                        model_file_path=tf.name,
                                        model_description='dummy model')
             model, desc = task.get_model_data(None)
@@ -37,7 +37,7 @@ class TestModelUploadOperator(unittest.TestCase):
     def test_get_model_data_from_xcom(self):
         task = ModelUploadOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    model_provide_task_id='task_1',
                                    model_description='dummy model')
         ti_mock = Mock()
@@ -72,7 +72,7 @@ class TestModelUploadOperator(unittest.TestCase):
         request_class_mock.return_value = request_mock
         task = ModelUploadOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    model_file_path='test.zip')
         model = 'dummy model'
         desc = 'dummy desc'
@@ -108,7 +108,7 @@ class TestModelUploadOperator(unittest.TestCase):
 
         task = ModelUploadOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    model_file_path='test.zip')
         res = task.get_model_id('dummy2')
         self.assertEqual(res, 6)

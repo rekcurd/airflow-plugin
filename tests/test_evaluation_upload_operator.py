@@ -42,7 +42,7 @@ class TestEvaluationUploadOperator(unittest.TestCase):
 
             task = EvaluationUploadOperator(task_id='rekcurd_api',
                                             dag=self.dag,
-                                            app_id=1,
+                                            project_id=1, app_id='sample_app',
                                             evaluation_file_path=tf.name)
             task.execute(None)
             expected_headers = {'Authorization': 'Bearer my_token'}

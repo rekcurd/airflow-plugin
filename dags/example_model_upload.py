@@ -51,12 +51,12 @@ with DAG('example_model_upload', default_args=default_args, schedule_interval="@
 
     # upload saved model file.
     upload_file = ModelUploadOperator(task_id='upload_file',
-                                      app_id=5,
+                                      project_id=1, app_id='sample_app',
                                       model_file_path=MODEL_PATH,
                                       model_description=MODEL_DESCRIPTION)
     # upload trained model data.
     upload_binary = ModelUploadOperator(task_id='upload_binary',
-                                        app_id=5,
+                                        project_id=1, app_id='sample_app',
                                         model_provide_task_id='train',
                                         model_description=MODEL_DESCRIPTION)
     delete = BashOperator(task_id='delete',

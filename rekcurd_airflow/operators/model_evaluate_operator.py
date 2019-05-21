@@ -1,42 +1,40 @@
 # -*- coding: utf-8 -*-
+import json
+from typing import Optional
 
 from airflow.utils.decorators import apply_defaults
-from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
 from airflow.exceptions import AirflowException
-import json
+
+from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
 
 
 class ModelEvaluateOperator(RekcurdOperator):
     """
     evaluate Rekcurd model
 
+    :param project_id: The targetted Rekcurd project ID.
     :param app_id: The targetted Rekcurd application ID.
-    :type app_id: integer
     :param overwrite: True if overwrite result even if the evaluated result already exists.
-    :type overwrite: bool
     :param model_id: ID of the model to be evaluated.
-    :type model_id: integer
     :param model_provide_task_id: ID of the task providing model_id by returing value.
         If `model_id` is NOT None, this param is ignored.
-    :type model_provide_task_id: string
     :param evaluation_id: ID of the evaluation data.
-    :type evaluation_id: integer
     :param evaluation_provide_task_id: ID of the task providing evaluation_id by returing value.
         If `model_id` is NOT None, this param is ignored.
-    :type evaluation_provide_task_id: string
     """
     @apply_defaults
     def __init__(self,
-                 app_id,
-                 timeout=300,
-                 overwrite=False,
-                 model_id=None,
-                 model_provide_task_id=None,
-                 evaluation_id=None,
-                 evaluation_provide_task_id=None,
+                 project_id: int,
+                 app_id: str,
+                 timeout: int = 300,
+                 overwrite: bool = False,
+                 model_id: Optional[int] = None,
+                 model_provide_task_id: Optional[str] = None,
+                 evaluation_id: Optional[int] = None,
+                 evaluation_provide_task_id: Optional[str] = None,
                  *args, **kwargs):
         super().__init__(
-            endpoint='/api/applications/{}/evaluate'.format(app_id),
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'evaluate',
             method='POST',
             timeout=timeout,
             headers={"Content-Type": "application/x-www-form-urlencoded"},

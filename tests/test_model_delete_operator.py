@@ -35,14 +35,14 @@ class TestModelDeleteOperator(unittest.TestCase):
         if timeout:
             task = ModelDeleteOperator(task_id='rekcurd_api',
                                        dag=self.dag,
-                                       app_id=1,
+                                       project_id=1, app_id='sample_app',
                                        model_id=model_id,
                                        timeout=timeout,
                                        model_provide_task_id=model_provide_task_id)
         else:
             task = ModelDeleteOperator(task_id='rekcurd_api',
                                        dag=self.dag,
-                                       app_id=1,
+                                       project_id=1, app_id='sample_app',
                                        model_id=model_id,
                                        model_provide_task_id=model_provide_task_id)
 

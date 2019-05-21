@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-
-from airflow.utils.decorators import apply_defaults
-from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
-from airflow.exceptions import AirflowException
-from airflow.hooks.http_hook import HttpHook
 import json
 from requests import Request
 from urllib.parse import urljoin
+from typing import Optional, Tuple
+
+from airflow.utils.decorators import apply_defaults
+from airflow.exceptions import AirflowException
+from airflow.hooks.http_hook import HttpHook
+
+from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
 
 
 class ModelUploadOperator(RekcurdOperator):
@@ -16,25 +18,24 @@ class ModelUploadOperator(RekcurdOperator):
     """
     Upload Rekcurd model
 
+    :param project_id: The targetted Rekcurd project ID.
     :param app_id: The targetted Rekcurd application ID.
-    :type app_id: integer
-    :param model_file_path: file path to the model to be uploaded
-    :type model_file_path: string
-    :param model_description: description of the model
-    :type model_description: string
-    :param model_provide_task_id: ID of the task providing model information by xcom_push
+    :param model_file_path: File path to the model to be uploaded.
+    :param model_description: Description of the model.
+    :param model_provide_task_id: ID of the task providing model information by xcom_push.
         If `model_file_path` is NOT None, this param is ignored.
     """
     @apply_defaults
     def __init__(self,
-                 app_id,
-                 timeout=300,
-                 model_file_path=None,
-                 model_description=None,
-                 model_provide_task_id=None,
+                 project_id: int,
+                 app_id: str,
+                 timeout: int = 300,
+                 model_file_path: Optional[str] = None,
+                 model_description: Optional[str] = None,
+                 model_provide_task_id: Optional[str] = None,
                  *args, **kwargs):
         super().__init__(
-            endpoint='/api/applications/{}/models'.format(app_id),
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'models',
             timeout=timeout,
             method=None,
             *args,
@@ -49,7 +50,7 @@ class ModelUploadOperator(RekcurdOperator):
         self.__desc = model_description
         self.__xcom_task_id = model_provide_task_id
 
-    def execute(self, context):
+    def execute(self, context) -> int:
         model, desc = self.get_model_data(context)
         result = json.loads(self.upload(model, desc))
 
@@ -62,7 +63,7 @@ class ModelUploadOperator(RekcurdOperator):
         self.log.info('ID of the uploaded model: {}'.format(model_id))
         return model_id
 
-    def get_model_data(self, context):
+    def get_model_data(self, context) -> Tuple[bytes, str]:
         if self.__model_path is None:
             model = context['ti'].xcom_pull(
                     key=self.MODEL_KEY,
@@ -78,7 +79,7 @@ class ModelUploadOperator(RekcurdOperator):
             desc = self.__desc
         return model, desc
 
-    def upload(self, model, desc):
+    def upload(self, model: bytes, desc: str) -> str:
         http = HttpHook('POST', http_conn_id=self.http_conn_id)
         session = http.get_conn(self.headers)
         req = Request('POST',
@@ -91,7 +92,7 @@ class ModelUploadOperator(RekcurdOperator):
         response = http.run_and_check(session, prepped_request, self.extra_options)
         return response.text
 
-    def get_model_id(self, desc):
+    def get_model_id(self, desc: str) -> int:
         http = HttpHook('GET', http_conn_id=self.http_conn_id)
         response = http.run(self.endpoint, headers=self.headers, extra_options=self.extra_options)
         models = json.loads(response.text)

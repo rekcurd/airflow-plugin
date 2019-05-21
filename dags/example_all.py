@@ -66,14 +66,17 @@ def output_metrics(**kwargs):
 with DAG('example_all', default_args=default_args, schedule_interval="@once") as dag:
     train = PythonOperator(task_id='train', python_callable=train_func, provide_context=True)
 
-    application_id = 5
+    project_id = 1
+    application_id = 'sample_app'
     sandbox_service_id = 10
     dev_service_id = 11
 
     upload_model = ModelUploadOperator(task_id='upload_model',
+                                       project_id=project_id,
                                        app_id=application_id,
                                        model_provide_task_id='train')
     switch_sandbox_model = ModelSwitchOperator(task_id='switch_sandbox_model',
+                                               project_id=project_id,
                                                app_id=application_id,
                                                service_id=sandbox_service_id,
                                                model_provide_task_id='upload_model')
@@ -83,13 +86,17 @@ with DAG('example_all', default_args=default_args, schedule_interval="@once") as
     save_eval_file = PythonOperator(task_id='write_eval_file',
                                     python_callable=write_eval_file,
                                     provide_context=True)
-    upload_evaluation_file = EvaluationUploadOperator(
-        task_id='upload_eval_file', app_id=application_id, evaluation_file_path=EVAL_PATH)
+    upload_evaluation_file = EvaluationUploadOperator(task_id='upload_eval_file',
+                                                      project_id=project_id,
+                                                      app_id=application_id,
+                                                      evaluation_file_path=EVAL_PATH)
     remove_eval_file = BashOperator(task_id='remove_local_eval_file',
                                     bash_command='rm {}'.format(EVAL_PATH),
                                     trigger_rule='all_done')
 
-    evaluate_model = ModelEvaluateOperator(task_id='evaluate_model', app_id=application_id,
+    evaluate_model = ModelEvaluateOperator(task_id='evaluate_model',
+                                           project_id=project_id,
+                                           app_id=application_id,
                                            model_provide_task_id='upload_model',
                                            evaluation_provide_task_id='upload_eval_file')
 
@@ -100,10 +107,12 @@ with DAG('example_all', default_args=default_args, schedule_interval="@once") as
                                          python_callable=is_good_evaluation_result,
                                          provide_context=True)
     delete_model = ModelDeleteOperator(task_id='delete_model',
+                                       project_id=project_id,
                                        app_id=application_id,
                                        model_provide_task_id='upload_model')
 
     switch_dev_model = ModelSwitchOperator(task_id='switch_development_model',
+                                           project_id=project_id,
                                            app_id=application_id,
                                            service_id=dev_service_id,
                                            model_provide_task_id='upload_model')

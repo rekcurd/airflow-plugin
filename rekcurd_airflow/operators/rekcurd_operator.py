@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from typing import Dict, Optional, Any
 
 from airflow.utils.decorators import apply_defaults
 from airflow.hooks.http_hook import HttpHook
@@ -10,29 +11,24 @@ class RekcurdOperator(BaseOperator):
     """
     Add authorization information to HTTP header of SimpleHttpOperator
 
-    :param endpoint: The relative part of the full url. (templated)
-    :type endpoint: string
-    :param timeout: Timeout of HTTP request (unit is second)
-    :type timeout: integer
+    :param endpoint: The relative part of the full url.
+    :param timeout: Timeout of HTTP request (unit is second.)
     :param extra_options: Extra options for the 'requests' library, see the
         'requests' documentation (options to modify timeout, ssl, etc.)
-    :type extra_options: A dictionary of options, where key is string and value
-        depends on the option that's being modified.
     """
     @apply_defaults
     def __init__(self,
-                 endpoint,
-                 timeout,
-                 method,
-                 headers={},
-                 data={},
-                 extra_options=None,
+                 endpoint: str,
+                 timeout: int,
+                 method: str,
+                 headers: Dict[str, str] = {},
+                 data: Dict[str, Any] = {},
+                 extra_options: Optional[Dict[str, Any]] = None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if isinstance(extra_options, dict):
-            if 'timeout' not in extra_options:
-                extra_options['timeout'] = timeout
+        if extra_options is not None and 'timeout' not in extra_options:
+            extra_options['timeout'] = timeout
         else:
             extra_options = {'timeout': timeout}
 
@@ -48,7 +44,10 @@ class RekcurdOperator(BaseOperator):
             Variable.get('rekcurd_access_token')
         )
 
-    def execute(self, context):
+    def _base_app_endpoint(self, project_id: int, app_id: str):
+        return '/api/projects/{}/applications/{}/'.format(project_id, app_id)
+
+    def execute(self, context) -> Any:
         http = HttpHook(self.method, http_conn_id=self.http_conn_id)
 
         response = http.run(self.endpoint,
