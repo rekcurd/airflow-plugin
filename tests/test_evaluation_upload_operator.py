@@ -54,7 +54,7 @@ class TestEvaluationUploadOperator(unittest.TestCase):
             request_class_mock.assert_called_with(
                 'POST',
                 'http://rekcurd-dashboard.com/api/projects/1/applications/sample_app/evaluations',
-                files={'file': b'hello foo.'},
+                files={'filepath': b'hello foo.'},
                 data={'description': 'sample data', 'duplicated_ok': True},
                 headers=expected_headers)
             http_hook_mock.run_and_check.assert_called_with(
