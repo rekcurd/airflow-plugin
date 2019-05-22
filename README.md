@@ -9,7 +9,7 @@ Airflow Plugins for [Rekcurd Dashboard](https://github.com/rekcurd/dashboard)
 ## Environment
 - Python 3.6
 - apache-airflow >= 1.10.x
-- Rekcurd Dashboard >= 0.4.x
+- Rekcurd Dashboard >= 1.0.x
 
 ## Setup
 - Setup Airflow
