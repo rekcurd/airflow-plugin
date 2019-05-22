@@ -29,7 +29,7 @@ class RekcurdOperator(BaseOperator):
 
         if extra_options is not None and 'timeout' not in extra_options:
             extra_options['timeout'] = timeout
-        else:
+        elif extra_options is None:
             extra_options = {'timeout': timeout}
 
         self.http_conn_id = 'rekcurd_dashboard'

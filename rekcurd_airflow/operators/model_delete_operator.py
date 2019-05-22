@@ -28,7 +28,7 @@ class ModelDeleteOperator(RekcurdOperator):
                  model_provide_task_id: Optional[str] = None,
                  *args, **kwargs):
         super().__init__(
-            endpoint=self._base_app_endpoint(project_id, app_id) + 'models',
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'models/',
             method='DELETE',
             timeout=timeout,
             *args,

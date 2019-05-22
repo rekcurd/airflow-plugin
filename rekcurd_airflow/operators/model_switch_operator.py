@@ -30,7 +30,7 @@ class ModelSwitchOperator(RekcurdOperator):
                  model_provide_task_id: Optional[str] = None,
                  *args, **kwargs):
         super().__init__(
-            endpoint=self._base_app_endpoint(project_id, app_id) + 'services{}'.format(service_id),
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'services/{}'.format(service_id),
             method='PUT',
             timeout=timeout,
             headers={"Content-Type": "application/x-www-form-urlencoded"},

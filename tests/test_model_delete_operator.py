@@ -55,7 +55,7 @@ class TestModelDeleteOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('DELETE', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/project/1/applications/sample_app/models/3',
+            '/api/projects/1/applications/sample_app/models/3',
             {},
             {
                 'Authorization': 'Bearer my_token'
@@ -77,7 +77,7 @@ class TestModelDeleteOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('DELETE', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/project/1/applications/sample_app/models/3',
+            '/api/projects/1/applications/sample_app/models/3',
             {},
             {
                 'Authorization': 'Bearer my_token'
@@ -91,7 +91,7 @@ class TestModelDeleteOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('DELETE', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/project/1/applications/sample_app/models/7',
+            '/api/projects/1/applications/sample_app/models/7',
             {},
             {
                 'Authorization': 'Bearer my_token',

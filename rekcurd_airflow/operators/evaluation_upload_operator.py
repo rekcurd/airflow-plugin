@@ -26,7 +26,7 @@ class EvaluationUploadOperator(RekcurdOperator):
                  timeout: int = 300,
                  *args, **kwargs):
         super().__init__(
-            endpoint=self._base_app_endpoint(project_id, app_id) + 'evaluatons',
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'evaluations',
             timeout=timeout,
             method='POST',
             *args,
