@@ -6,9 +6,9 @@ services:
 matrix:
   include:
   - python: 3.6
-    env: TOXENV=py36 SLUGIFY_USES_TEXT_UNIDECODE=yes
+    env: TOXENV=py36 SLUGIFY_USES_TEXT_UNIDECODE=yes AIRFLOW_HOME=.
   - python: 3.6
-    env: TOXENV=coverage,codecov SLUGIFY_USES_TEXT_UNIDECODE=yes
+    env: TOXENV=coverage,codecov SLUGIFY_USES_TEXT_UNIDECODE=yes AIRFLOW_HOME=.
 install:
 - pip install tox
 script:
@@ -17,4 +17,3 @@ notifications:
   email: false
   slack:
     secure: tZqVkCgxZIxPoG7/laxvknURbl1lfeYtxclsZXcHWZ20VVyohsC/8XfoTWk1WgFVYo2yCnPBvj2k2yqkjgIuNNrLiCdsBpxSMiswVJiro/0dkG7yVd+qgn06s3CGNL1m200wfXfzC9Ze9lQqRaPlqGPNLJODMZKZBJTnlaLCJtHqwaeSeJMKUUZEJet34d2fZ3EMVpuKwaB+sReGKr8pkHg2MG+PahhpQGdNntNrOxE2/+o5ArsOHFAtMHVpgUt8yn18NY8aXucRHdvNLcMwxMY8AHMmr3zNJjI9aE/BCi+qOsxRevJzPULbi/usB5/vP+5v4RUtxeCoUTzZ0IQXCGqjOiDVWRNiCEhQeyIgQk3baj8361yGSA7NmpO7dCYhc5NDm5uBWOE1yon55BXdllYAkxxkOOK6jHuJZ+E5b/1UXU0tIq0cU9GWwC/50dI34Jl3TLXqmmVLuBy+x3yQuzpLmHDEnFTr0xe5OLognNznaBXEDenGiww/tJRfOw6ZL63T4TSZSOoyiKBKGCwmyMId/lNnTxMRjWqm3apn1v/d4b1i5YfCxx94OJUDGPBlWZOUGxXA2Fmz75Qf2i6rcjRUdOhqZzlO4RRxr/nySnYdMjwZI91lLlpNqJ7IaYXUGonNLwgzPlSaqjwfE2viPg0gapptFsewBIhrug6Upq4=
-
