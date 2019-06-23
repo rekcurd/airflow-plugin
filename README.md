@@ -53,5 +53,5 @@ $ airflow initdb
 $ fernet_key=`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`
 $ sed -i -e "s/\(fernet_key =\).*/\1 $fernet_key/" airflow.cfg
 
-$ python -m unittest
+$ python -m unittest tests/**/*.py
 ```
