@@ -9,7 +9,7 @@ Airflow Plugins for [Rekcurd Dashboard](https://github.com/rekcurd/dashboard)
 ## Environment
 - Python 3.6
 - apache-airflow >= 1.10.x
-- Rekcurd Dashboard >= 0.4.x
+- Rekcurd Dashboard >= 1.0.x
 
 ## Setup
 - Setup Airflow
@@ -53,5 +53,5 @@ $ airflow initdb
 $ fernet_key=`python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`
 $ sed -i -e "s/\(fernet_key =\).*/\1 $fernet_key/" airflow.cfg
 
-$ python -m unittest
+$ python -m unittest tests/**/*.py
 ```

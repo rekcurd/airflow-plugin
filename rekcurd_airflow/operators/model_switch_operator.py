@@ -1,36 +1,36 @@
 # -*- coding: utf-8 -*-
+import json
+from typing import Optional
 
 from airflow.utils.decorators import apply_defaults
-from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
 from airflow.exceptions import AirflowException
-import json
+
+from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
 
 
 class ModelSwitchOperator(RekcurdOperator):
     """
     Switch Rekcurd model
 
+    :param project_id: The targetted Rekcurd project ID.
     :param app_id: The targetted Rekcurd application ID.
-    :type app_id: integer
     :param service_id: The targetted Rekcurd service ID.
-    :type service_id: integer
     :param model_id: ID of the model to be switched to.
         The targetted service will use this model.
-    :type model_id: integer
     :param model_provide_task_id: ID of the task providing model_id by returing value.
         If `model_id` is NOT None, this param is ignored.
-    :type model_provide_task_id: string
     """
     @apply_defaults
     def __init__(self,
-                 app_id,
-                 service_id,
-                 timeout=300,
-                 model_id=None,
-                 model_provide_task_id=None,
+                 project_id: int,
+                 app_id: str,
+                 service_id: int,
+                 timeout: int = 300,
+                 model_id: Optional[int] = None,
+                 model_provide_task_id: Optional[str] = None,
                  *args, **kwargs):
         super().__init__(
-            endpoint='/api/applications/{}/services/{}'.format(app_id, service_id),
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'services/{}'.format(service_id),
             method='PUT',
             timeout=timeout,
             headers={"Content-Type": "application/x-www-form-urlencoded"},

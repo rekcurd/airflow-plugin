@@ -26,7 +26,7 @@ class TestModelUploadOperator(unittest.TestCase):
             tf.seek(0)
             task = ModelUploadOperator(task_id='rekcurd_api',
                                        dag=self.dag,
-                                       app_id=1,
+                                       project_id=1, app_id='sample_app',
                                        model_file_path=tf.name,
                                        model_description='dummy model')
             model, desc = task.get_model_data(None)
@@ -37,7 +37,7 @@ class TestModelUploadOperator(unittest.TestCase):
     def test_get_model_data_from_xcom(self):
         task = ModelUploadOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    model_provide_task_id='task_1',
                                    model_description='dummy model')
         ti_mock = Mock()
@@ -72,7 +72,7 @@ class TestModelUploadOperator(unittest.TestCase):
         request_class_mock.return_value = request_mock
         task = ModelUploadOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    model_file_path='test.zip')
         model = 'dummy model'
         desc = 'dummy desc'
@@ -85,7 +85,7 @@ class TestModelUploadOperator(unittest.TestCase):
         session_mock.prepare_request.assert_called_with(request_mock)
         request_class_mock.assert_called_with(
             'POST',
-            'http://rekcurd-dashboard.com/api/applications/1/models',
+            'http://rekcurd-dashboard.com/api/projects/1/applications/sample_app/models',
             data={'description': desc},
             files={'file': model},
             headers=expected_headers)
@@ -108,7 +108,7 @@ class TestModelUploadOperator(unittest.TestCase):
 
         task = ModelUploadOperator(task_id='rekcurd_api',
                                    dag=self.dag,
-                                   app_id=1,
+                                   project_id=1, app_id='sample_app',
                                    model_file_path='test.zip')
         res = task.get_model_id('dummy2')
         self.assertEqual(res, 6)
@@ -117,6 +117,6 @@ class TestModelUploadOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('GET', http_conn_id='rekcurd_dashboard')
         http_hook_mock.run.assert_called_with(
-            '/api/applications/1/models',
+            '/api/projects/1/applications/sample_app/models',
             headers=expected_headers,
             extra_options={'timeout': 300})

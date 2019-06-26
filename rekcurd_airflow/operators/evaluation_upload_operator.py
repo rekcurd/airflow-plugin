@@ -1,31 +1,32 @@
 # -*- coding: utf-8 -*-
-
-from airflow.utils.decorators import apply_defaults
-from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
-from airflow.exceptions import AirflowException
-from airflow.hooks.http_hook import HttpHook
 import json
 from requests import Request
 from urllib.parse import urljoin
+
+from airflow.utils.decorators import apply_defaults
+from airflow.exceptions import AirflowException
+from airflow.hooks.http_hook import HttpHook
+
+from rekcurd_airflow.operators.rekcurd_operator import RekcurdOperator
 
 
 class EvaluationUploadOperator(RekcurdOperator):
     """
     Upload evaluation data
 
+    :param project_id: The targetted Rekcurd project ID.
     :param app_id: The targetted Rekcurd application ID.
-    :type app_id: integer
-    :param evaluation_file_path: file path to evaluation data to be uploaded
-    :type evaluation_file_path: string
+    :param evaluation_file_path: File path to evaluation data to be uploaded.
     """
     @apply_defaults
     def __init__(self,
-                 app_id,
-                 timeout=300,
-                 evaluation_file_path=None,
+                 project_id: int,
+                 app_id: str,
+                 evaluation_file_path: str,
+                 timeout: int = 300,
                  *args, **kwargs):
         super().__init__(
-            endpoint='/api/applications/{}/evaluations'.format(app_id),
+            endpoint=self._base_app_endpoint(project_id, app_id) + 'evaluations',
             timeout=timeout,
             method='POST',
             *args,
@@ -33,7 +34,7 @@ class EvaluationUploadOperator(RekcurdOperator):
 
         self.__evaluation_path = evaluation_file_path
 
-    def execute(self, context):
+    def execute(self, context) -> int:
         http = HttpHook(self.method, http_conn_id=self.http_conn_id)
         session = http.get_conn(self.headers)
         with open(self.__evaluation_path, 'rb') as evaluation_file:

@@ -42,7 +42,7 @@ class TestEvaluationUploadOperator(unittest.TestCase):
 
             task = EvaluationUploadOperator(task_id='rekcurd_api',
                                             dag=self.dag,
-                                            app_id=1,
+                                            project_id=1, app_id='sample_app',
                                             evaluation_file_path=tf.name)
             task.execute(None)
             expected_headers = {'Authorization': 'Bearer my_token'}
@@ -52,7 +52,7 @@ class TestEvaluationUploadOperator(unittest.TestCase):
             session_mock.prepare_request.assert_called_with(request_mock)
             request_class_mock.assert_called_with(
                 'POST',
-                'http://rekcurd-dashboard.com/api/applications/1/evaluations',
+                'http://rekcurd-dashboard.com/api/projects/1/applications/sample_app/evaluations',
                 files={'file': b'hello foo.'},
                 headers=expected_headers)
             http_hook_mock.run_and_check.assert_called_with(

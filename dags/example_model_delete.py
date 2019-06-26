@@ -29,15 +29,19 @@ def push_by_return(**kwargs):
 """
 In production environment, ModelUploadOperator will return new model's model_id
 """
-push_by_return = PythonOperator(task_id='push_by_return', dag=dag, python_callable=push_by_return)
+push_by_return = PythonOperator(task_id='push_by_return', dag=dag,
+                                python_callable=push_by_return)
 
 # Delete Model whose ID = 3. (The model is in Application 1)
-delete = ModelDeleteOperator(task_id='delete_op', app_id=1, model_id=3, dag=dag)
+delete = ModelDeleteOperator(task_id='delete_op', project_id=1,
+                             app_id='sample_app', model_id=3,
+                             dag=dag)
 
 # ModelDeleteOperator can receive model_id by using XCom.
 # ModelDeleteOperator will receive the model ID returned by `model_provide_task`
 # Delete Model whose ID = 5. (The model is in Application 1)
-delete2 = ModelDeleteOperator(task_id='delete_op_xcom_return', app_id=1,
+delete2 = ModelDeleteOperator(task_id='delete_op_xcom_return',
+                              project_id=1, app_id='sample_app',
                               model_provide_task_id='push_by_return',
                               dag=dag)
 

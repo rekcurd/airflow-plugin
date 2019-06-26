@@ -40,7 +40,7 @@ class TestModelEvaluateOperator(unittest.TestCase):
 
         task = ModelEvaluateOperator(task_id='rekcurd_api',
                                      dag=self.dag,
-                                     app_id=1,
+                                     project_id=1, app_id='sample_app',
                                      model_id=model_id,
                                      overwrite=overwrite,
                                      model_provide_task_id=model_provide_task_id,
@@ -56,7 +56,7 @@ class TestModelEvaluateOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('POST', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/applications/1/evaluate',
+            '/api/projects/1/applications/sample_app/evaluate',
             'model_id=3&evaluation_id=5&overwrite=false',
             {
                 'Authorization': 'Bearer my_token',
@@ -91,7 +91,7 @@ class TestModelEvaluateOperator(unittest.TestCase):
 
         http_hook_class_mock.assert_called_with('POST', http_conn_id='rekcurd_dashboard')
         self.http_hook_mock.run.assert_called_with(
-            '/api/applications/1/evaluate',
+            '/api/projects/1/applications/sample_app/evaluate',
             'model_id=7&evaluation_id=7&overwrite=true',
             {
                 'Authorization': 'Bearer my_token',

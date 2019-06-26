@@ -40,7 +40,8 @@ with DAG('example_evaluation_upload', default_args=default_args, schedule_interv
 
     # Upload data file to be evaluated to Rekcurd
     upload_evaluation_file = EvaluationUploadOperator(
-        task_id='upload_file', app_id=5, evaluation_file_path=EVAL_PATH)
+        task_id='upload_file', project_id=1, app_id='sample_app',
+        evaluation_file_path=EVAL_PATH)
 
     print_id = PythonOperator(task_id='print',
                               python_callable=print_evaluation_id,
