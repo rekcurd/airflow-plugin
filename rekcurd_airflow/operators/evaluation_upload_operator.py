@@ -18,7 +18,6 @@ class EvaluationUploadOperator(RekcurdOperator):
     :param app_id: The targetted Rekcurd application ID.
     :param evaluation_file_path: File path to evaluation data to be uploaded.
     :param description: Description of evaluation data.
-    :param duplicated_ok: If true, API returns 200 even if the existing file content is given.
     """
     @apply_defaults
     def __init__(self,
@@ -26,7 +25,6 @@ class EvaluationUploadOperator(RekcurdOperator):
                  app_id: str,
                  evaluation_file_path: str,
                  description: str,
-                 duplicated_ok: bool = True,
                  timeout: int = 300,
                  *args, **kwargs):
         super().__init__(
@@ -38,7 +36,6 @@ class EvaluationUploadOperator(RekcurdOperator):
 
         self.__evaluation_path = evaluation_file_path
         self.__desc = description
-        self.__duplicated_ok = duplicated_ok
 
     def execute(self, context) -> int:
         http = HttpHook(self.method, http_conn_id=self.http_conn_id)
@@ -49,8 +46,7 @@ class EvaluationUploadOperator(RekcurdOperator):
         req = Request(self.method,
                       urljoin(http.base_url, self.endpoint),
                       files={'filepath': evaluation_data},
-                      data={'description': self.__desc,
-                            'duplicated_ok': self.__duplicated_ok},
+                      data={'description': self.__desc},
                       headers=self.headers)
 
         response = http.run_and_check(session,
