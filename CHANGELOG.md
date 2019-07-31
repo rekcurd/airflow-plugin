@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.1.1](https://github.com/rekcurd/airflow-plugin/tree/v0.1.1)
+
+[Full Changelog](https://github.com/rekcurd/airflow-plugin/compare/v0.1.0...v0.1.1)
+
+**Merged pull requests:**
+
+- remove duplicated\_ok [\#3](https://github.com/rekcurd/airflow-plugin/pull/3) ([yuki-mt](https://github.com/yuki-mt))
+- update for evaluation [\#2](https://github.com/rekcurd/airflow-plugin/pull/2) ([yuki-mt](https://github.com/yuki-mt))
+- update for dashboard v1.0 [\#1](https://github.com/rekcurd/airflow-plugin/pull/1) ([yuki-mt](https://github.com/yuki-mt))
+
 ## [v0.1.0](https://github.com/rekcurd/airflow-plugin/tree/v0.1.0) (2019-03-06)
 
 
